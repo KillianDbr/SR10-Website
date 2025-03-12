@@ -20,6 +20,6 @@ CREATE TABLE Fiche_poste (id SERIAL PRIMARY KEY, intitule VARCHAR, statut_poste 
 
 CREATE TABLE Offre (numero INTEGER PRIMARY KEY, etat ETAT NOT NULL, date_validite DATE NOT NULL, pieces_demandees VARCHAR, nombre_pieces_demandees INT, fiche_poste INTEGER NOT NULL, recruteur INTEGER NOT NULL, FOREIGN KEY (fiche_poste) REFERENCES Fiche_poste (id), FOREIGN KEY (recruteur) REFERENCES Recruteur (id));
 
-CREATE TABLE Candidature (id SERIAL UNIQUE, utilisateur INTEGER NOT NULL, offre INTEGER NOT NULL, date DATE NOT NULL, FOREIGN KEY (utilisateur) REFERENCES Utilisateur (id), FOREIGN KEY (offre) REFERENCES Offre (numero), PRIMARY KEY (utilisateur, offre));
+CREATE TABLE Candidature (id SERIAL PRIMARY KEY, utilisateur INTEGER NOT NULL, offre INTEGER NOT NULL, date DATE NOT NULL, FOREIGN KEY (utilisateur) REFERENCES Utilisateur (id), FOREIGN KEY (offre) REFERENCES Offre (numero), UNIQUE (utilisateur, offre));
 
 CREATE TABLE Fichier (id SERIAL PRIMARY KEY, candidature INTEGER NOT NULL, nom_fichier VARCHAR(100), FOREIGN KEY (candidature) REFERENCES Candidature (id));
