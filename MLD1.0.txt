@@ -18,6 +18,6 @@ Fiche_poste (#id : int, intitulé : string, statut_poste => Statut, responsable 
 
 Offre (#numero : int, etat : enum {"non-publié", "publié", "expiré"}, date_validité : date, pieces_demandées : string, nombre_pieces_demandées : int, fiche_poste => Fiche_poste, recruteur => Recruteur) with fiche_poste, recruteur NOT NULL
 
-Candidature (#utilisateur => Utilisateur, #offre => Offre, date : date)
+Candidature (id : int, #utilisateur => Utilisateur, #offre => Offre, date : date) with id UNIQUE
 
 Fichier (#id : int, candidature => Candidature, nom_fichier : string) with candidature NOT NULL
