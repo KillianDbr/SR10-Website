@@ -1,12 +1,23 @@
 Type (#nom : string)
+
 Statut (#statut : string)
+
 Metier (#metier : string)
+
 Rythme (#rythme : string)
+
 Organisation (#SIREN : int, nom : string, siege_social : string, type => Type) with type, siege_social, nom NOT NULL
-Utilisateur (#id : int, nom : string, mail : string, mdp : string, telephone : string, date_creation : date, statut : bool) with nom, mdp, mail NOT NULL
-Administrateur (#id : int, utilisateur => Utilisateur) with utilisateur NOT NULL
-Recruteur (#id : int, utilisateur => Utilisateur, organisation => Organisation) with utilisateur, organisation NOT NULL
-Fiche_poste (#id : int, intitulé : string, statut_poste => Statut, responsable : string, type_metier => Metier, lieu : string, rythme => Rythme, salaire : float, description : string) with statut_poste, type_metier, rythme NOT NULL
+
+Utilisateur (nom : string, mail : string, mdp : string, telephone : string, date_creation : date, statut : bool) with nom, mdp, mail NOT NULL
+
+Administrateur (#utilisateur => Utilisateur) with utilisateur NOT NULL
+
+Recruteur (#utilisateur => Utilisateur, organisation => Organisation) with utilisateur, organisation NOT NULL
+
+Fiche_poste (#intitulé : string, statut_poste => Statut, responsable : string, type_metier => Metier, lieu : string, rythme => Rythme, salaire : float, description : string) with statut_poste, type_metier, rythme NOT NULL
+
 Offre (#numero : int, etat : enum {"non-publié", "publié", "expiré"}, date_validité : date, pieces_demandées : string, nombre_pieces_demandées : int, fiche_poste => Fiche_poste, recruteur => Recruteur) with fiche_poste, recruteur NOT NULL
-Candidature (#utilisateur => Utilisateur, #offre => Offre, date : date)
-Fichier (#id : int, candidature => Candidature, nom_fichier : string) with candidature NOT NULL
+
+Candidature (utilisateur => Utilisateur, offre => Offre, date : date) with id UNIQUE
+
+Fichier (candidature => Candidature, nom_fichier : string) with candidature NOT NULL
