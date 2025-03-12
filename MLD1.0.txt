@@ -10,9 +10,9 @@ Organisation (#SIREN : int, nom : string, siege_social : string, type => Type) w
 
 Utilisateur (#id : int, nom : string, mail : string, mdp : string, telephone : string, date_creation : date, statut : bool) with nom, mdp, mail NOT NULL
 
-Administrateur (#id : int, utilisateur => Utilisateur) with utilisateur NOT NULL
+Administrateur (#utilisateur => Utilisateur) with utilisateur NOT NULL
 
-Recruteur (#id : int, utilisateur => Utilisateur, organisation => Organisation) with utilisateur, organisation NOT NULL
+Recruteur (#utilisateur => Utilisateur, organisation => Organisation) with utilisateur, organisation NOT NULL
 
 Fiche_poste (#id : int, intitulé : string, statut_poste => Statut, responsable : string, type_metier => Metier, lieu : string, rythme => Rythme, salaire : float, description : string) with statut_poste, type_metier, rythme NOT NULL
 
