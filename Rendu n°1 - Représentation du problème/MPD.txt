@@ -14,11 +14,11 @@ CREATE TABLE Organisation (siren NUMERIC(9) PRIMARY KEY, nom VARCHAR(100) NOT NU
 
 CREATE TABLE Utilisateur (id SERIAL PRIMARY KEY, nom VARCHAR(100) NOT NULL, mail VARCHAR(200) NOT NULL, mdp VARCHAR(50) NOT NULL, telephone NUMERIC(10), date_creation DATE NOT NULL, statut BOOLEAN NOT NULL);
 
-CREATE TABLE Administrateur (id SERIAL PRIMARY KEY, utilisateur INTEGER NOT NULL, FOREIGN KEY (utilisateur) REFERENCES Utilisateur(id));
+CREATE TABLE Administrateur (id INTEGER PRIMARY KEY, FOREIGN KEY (id) REFERENCES Utilisateur(id));
 
-CREATE TABLE Recruteur (id SERIAL PRIMARY KEY, utilisateur INTEGER NOT NULL, organisation NUMERIC(9) NOT NULL, FOREIGN KEY (utilisateur) REFERENCES Utilisateur(id), FOREIGN KEY (organisation) REFERENCES Organisation (siren));
+CREATE TABLE Recruteur (id INTEGER PRIMARY KEY, organisation NUMERIC(9) NOT NULL, FOREIGN KEY (id) REFERENCES Utilisateur(id), FOREIGN KEY (organisation) REFERENCES Organisation (siren));
 
-CREATE TABLE Fiche_poste (id SERIAL PRIMARY KEY, intitule VARCHAR, statut_poste VARCHAR NOT NULL, responsable VARCHAR, type_metier VARCHAR NOT NULL, lieu VARCHAR(200), rythme VARCHAR NOT NULL, salaire FLOAT, description VARCHAR, FOREIGN KEY (statut_poste) REFERENCES Statut(statut), FOREIGN KEY (type_metier) REFERENCES Metier (metier), FOREIGN KEY (rythme) REFERENCES Rythme (rythme));
+CREATE TABLE Fiche_poste (id SERIAL PRIMARY KEY, intitule VARCHAR, statut_poste VARCHAR NOT NULL, responsable VARCHAR(100) NOT NULL, type_metier VARCHAR NOT NULL, lieu VARCHAR(200), rythme VARCHAR NOT NULL, salaire FLOAT, description VARCHAR, FOREIGN KEY (statut_poste) REFERENCES Statut(statut), FOREIGN KEY (type_metier) REFERENCES Metier (metier), FOREIGN KEY (rythme) REFERENCES Rythme (rythme));
 
 CREATE TABLE Offre (numero INTEGER PRIMARY KEY, etat ETAT NOT NULL, date_validite DATE NOT NULL, pieces_demandees VARCHAR, nombre_pieces_demandees INT, fiche_poste INTEGER NOT NULL, recruteur INTEGER NOT NULL, FOREIGN KEY (fiche_poste) REFERENCES Fiche_poste (id), FOREIGN KEY (recruteur) REFERENCES Recruteur (id));
 
