@@ -1,0 +1,27 @@
+CREATE TYPE etat AS ENUM ('non-publié', 'publié', 'expiré');
+
+CREATE TYPE verification AS ENUM ('validé', 'en_attente_de_validation', 'non_validé');
+
+CREATE TABLE Type (nom VARCHAR PRIMARY KEY);
+
+CREATE TABLE Statut (statut VARCHAR PRIMARY KEY);
+
+CREATE TABLE Metier (metier VARCHAR PRIMARY KEY);
+
+CREATE TABLE Rythme (rythme VARCHAR PRIMARY KEY);
+
+CREATE TABLE Organisation (siren NUMERIC(9) PRIMARY KEY, nom VARCHAR(100) NOT NULL, siege_social VARCHAR(100) NOT NULL, type VARCHAR NOT NULL, verification VERIFICATION NOT NULL, FOREIGN KEY (type) REFERENCES Type(nom));
+
+CREATE TABLE Utilisateur (id SERIAL PRIMARY KEY, nom VARCHAR(100) NOT NULL, mail VARCHAR(200) NOT NULL, mdp VARCHAR(50) NOT NULL, telephone NUMERIC(10), date_creation DATE NOT NULL, statut BOOLEAN NOT NULL);
+
+CREATE TABLE Administrateur (id SERIAL PRIMARY KEY, utilisateur INTEGER NOT NULL, FOREIGN KEY (utilisateur) REFERENCES Utilisateur(id));
+
+CREATE TABLE Recruteur (id SERIAL PRIMARY KEY, utilisateur INTEGER NOT NULL, organisation NUMERIC(9) NOT NULL, FOREIGN KEY (utilisateur) REFERENCES Utilisateur(id), FOREIGN KEY (organisation) REFERENCES Organisation (siren));
+
+CREATE TABLE Fiche_poste (id SERIAL PRIMARY KEY, intitule VARCHAR, statut_poste VARCHAR NOT NULL, responsable VARCHAR, type_metier VARCHAR NOT NULL, lieu VARCHAR(200), rythme VARCHAR NOT NULL, salaire FLOAT, description VARCHAR, FOREIGN KEY (statut_poste) REFERENCES Statut(statut), FOREIGN KEY (type_metier) REFERENCES Metier (metier), FOREIGN KEY (rythme) REFERENCES Rythme (rythme));
+
+CREATE TABLE Offre (numero INTEGER PRIMARY KEY, etat ETAT NOT NULL, date_validite DATE NOT NULL, pieces_demandees VARCHAR, nombre_pieces_demandees INT, fiche_poste INTEGER NOT NULL, recruteur INTEGER NOT NULL, FOREIGN KEY (fiche_poste) REFERENCES Fiche_poste (id), FOREIGN KEY (recruteur) REFERENCES Recruteur (id));
+
+CREATE TABLE Candidature (id SERIAL PRIMARY KEY, utilisateur INTEGER NOT NULL, offre INTEGER NOT NULL, date DATE NOT NULL, FOREIGN KEY (utilisateur) REFERENCES Utilisateur (id), FOREIGN KEY (offre) REFERENCES Offre (numero), UNIQUE (utilisateur, offre));
+
+CREATE TABLE Fichier (id SERIAL PRIMARY KEY, candidature INTEGER NOT NULL, nom_fichier VARCHAR(100), FOREIGN KEY (candidature) REFERENCES Candidature (id));
